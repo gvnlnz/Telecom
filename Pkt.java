@@ -1,13 +1,12 @@
 public class Pkt {
     protected int codPkt;
-    protected double tempoArrivo, tempoServizio, tempoEntrataCoda, tempoEntrataServer;
+    protected double tempoArrivo, tempoServizio, tempoCoda;
 
-    public Pkt(int codPkt, double tempoArrivo) {
+    public Pkt(int codPkt, double tempoArrivo, double tempoServizio, double tempoCoda) {
         this.codPkt = codPkt;
         this.tempoArrivo = tempoArrivo;
-        tempoServizio = 0;
-        tempoEntrataCoda = 0;
-        tempoEntrataServer = 0;
+        this.tempoServizio = tempoServizio;
+        this.tempoCoda = tempoCoda;
     }
 
     public int getCodPkt() {
@@ -30,27 +29,15 @@ public class Pkt {
         this.tempoServizio = tempoServizio;
     }
 
-    public double getTempoEntrataCoda() {
-        return tempoEntrataCoda;
+    public double getTempoCoda() {
+        return tempoCoda;
     }
 
-    public void setTempoEntrataCoda(double tempoEntrataCoda) {
-        this.tempoEntrataCoda = tempoEntrataCoda;
-    }
-
-    public double getTempoEntrataServer() {
-        return tempoEntrataServer;
-    }
-
-    public void setTempoEntrataServer(double tempoEntrataServer) {
-        this.tempoEntrataServer = tempoEntrataServer;
-    }
-
-    public double getDifferenza() {
-        return tempoServizio - tempoArrivo;
+    public void setTempoCoda(double tempoCoda) {
+        this.tempoCoda = tempoCoda;
     }
 
     public String toString() {
-        return "Cod: " + codPkt + "; Tempo di arrivo: " + tempoArrivo + "; Tempo di servizio: " + tempoServizio + "; " + getDifferenza();
+        return "Cod: " + codPkt + "; Tempo di arrivo: " + tempoArrivo + "; Tempo di servizio: " + tempoServizio;
     }
 }

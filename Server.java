@@ -1,12 +1,10 @@
 public class Server {
     protected int codServer;
-    protected double tempoServizio; // tempo nel quale il server non può ricevere altri pacchetti
-    protected int codPkt;
+    protected Pkt pkt;
 
-    public Server (int codServer) {
+    public Server (int codServer, Pkt pkt) {
         this.codServer = codServer;
-        tempoServizio = 0;
-        codPkt = 0;
+        this.pkt = pkt;
     }
 
     public int getCodServer() {
@@ -14,29 +12,24 @@ public class Server {
     }
 
     public double getTempoServizio() {
-        return tempoServizio;
+        return pkt.getTempoServizio();
     }
 
-    public void setServer(double tempoServizioPkt, int codPkt) {
-        this.tempoServizio = tempoServizioPkt;
-        this.codPkt = codPkt;
+    public void setPkt(Pkt pkt) {
+        this.pkt = pkt;
     }
 
-    public void resetTempoServizio() {
-        this.tempoServizio = 0;
-        this.codPkt = 0;
+    public void reset() {
+            Pkt pktNull = new Pkt(0, 0, 0, 0);
+            this.pkt = pktNull;
     }
 
-    public int getCodPkt() {
-        return codPkt;
-    }
-
-    public void setCodPkt(int codPkt) {
-        this.codPkt = codPkt;
+    public Pkt getPkt() {
+        return pkt;
     }
 
 
-    public String toString() {
-        return "Server: " + codServer + "; Tempo di servizio: " + tempoServizio + "; Codice pacchetto: " + codPkt;
-    }
+    // public String toString() {
+    //     return "Server: " + codServer + "; Tempo di servizio: " + tempoServizio + "; Codice pacchetto: " + codPkt;
+    // }
 }

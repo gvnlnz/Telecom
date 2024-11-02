@@ -2,16 +2,16 @@ import java.util.*;
 
 public class MMC {
     public int lam, mu, c; 
-    protected List<Pkt> pacchetti, coda;
+    protected List<Pkt> coda, pktServiti;
     protected List<Server> servitori;
 
     public MMC(int lam, int mu, int c) {
         this.lam = lam;
         this.mu = mu;
         this.c = c;
-        pacchetti = new LinkedList<Pkt>();
         coda = new LinkedList<Pkt>();
         servitori = new LinkedList<Server>();
+        pktServiti = new LinkedList<Pkt>();
     }
     //parametri del sistema MMC
     public int getLam() {
@@ -36,40 +36,16 @@ public class MMC {
         coda.add(pkt);
     }
 
-    //restituisce lista pacchetti
-    public List<Pkt> getPacchetti() {
-        return pacchetti;
-    }
-
-    //aggiungo pacchetto alla lista pacchetti
-    public void addPkt(Pkt pkt) { // quando un pkt arriva, non so nè se aspetterà nè quando verrà servito
-        pacchetti.add(pkt);
-    }
-
-    public int getNumPkt() {
-        if(pacchetti == null)
-            return 0;
-        return pacchetti.size();
-    }
-
     //mi restituisce la lista dei server
     public List<Server> getServitori() {
         return servitori;
     }
 
-    public int getServerPieni() {
-        int serverPieni = 0;
-        for(Server s : servitori) {
-            if(s.getTempoServizio() > 0)
-                serverPieni++;
-        }
-        return serverPieni;
+    //aggiungo server alla lista servitori (utilizzata solo nell'inizializzazione)
+    public void addServer(int codServer, Pkt pkt) {
+        servitori.add(new Server(codServer, pkt));
     }
 
-    //aggiungo server alla lista servitori (utilizzata solo nell'inizializzazione)
-    public void addServer(int codServer) {
-        servitori.add(new Server(codServer));
-    }
 
     //funzione che calcola l'esponenziale random per gli arrivi
     public double randomExponentialLam() {
@@ -80,5 +56,9 @@ public class MMC {
     public double randomExponentialMu() {
         Random rand = new Random();
         return Math.log(1 - rand.nextDouble()) / (-this.mu);
+    }
+
+    public void addPktServiti(Pkt pkt) {
+        pktServiti.add(pkt);
     }
 }
