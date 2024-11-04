@@ -1,3 +1,0 @@
-linea 34: impostare numero di server pieni uguale a C
-linea 41: settare a 0 n server pieni, che poi vengono quantificati nel ciclo seguente
-linea 33: il tempo di servizio deve essere anche diverso da 0

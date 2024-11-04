@@ -8,7 +8,7 @@ public class MMcSystem {
         // int nPktServiti = 0; // numero di pacchetti serviti      
         // double Ws = 0; // tempo medio trascorso in sistema
         // double WsTot = 0; // somma di tutt i itempi di permanenza nel sistema
-        // int pktSistema = 0; // numero di pacchetti nel sistema
+        int pktSistema = 0; // numero di pacchetti nel sistema
         // int cambiamentiStato = 0;
         
         // inizializzo il sistema
@@ -34,7 +34,7 @@ public class MMcSystem {
 
         int serverPieni = sistema.getC(); // server pieni inizialmente = c
 
-        while (t < 5) { // finchè il tempo attuale è minore di 5 secondi
+        while (t < 60) { // finchè il tempo attuale è minore di 5 secondi
             double minTime = tempoArrivoPkt; 
             for(Server s : sistema.getServitori()) { // scorro i server per trovare quello con il servizio minore
                 if(s.getTempoServizio() < minTime && s.getTempoServizio() != 0) { // se il tempo di servizio del server è minore del minimo
@@ -52,9 +52,12 @@ public class MMcSystem {
                     if(s.getTempoServizio() > 0) // se il server è pieno
                         serverPieni++; // incremento il numero di server pieni
                 }
+                pktSistema = serverPieni + sistema.getCoda().size(); // numero di pacchetti nel sistema
+                sistema.addCambiamentiStato(pktSistema, t);
 
                 if(serverPieni == sistema.getC()) { // se tutti i server sono pieni
                     sistema.getCoda().add(pkt); // server pieni, pkt in coda
+                    sistema.addCambiamentiStatoCoda(sistema.getCoda().size(), t);
                 } else { // c'è almeno un server libero
                     for(Server s : sistema.getServitori()){
                         if(s.getTempoServizio() == 0) {
@@ -73,6 +76,8 @@ public class MMcSystem {
                         sistema.addPktServiti(s.getPkt());  // aggiungo il pacchetto servito alla lista dei pacchetti serviti
                         s.reset(); // libero il server
                         serverPieni--;
+                        pktSistema = serverPieni + sistema.getCoda().size(); // numero di pacchetti nel sistema
+                        sistema.addCambiamentiStato(pktSistema, t);
 
                         if(sistema.getCoda().size() > 0) {
                             Pkt pktInCoda = sistema.getCoda().get(0); // prendo il primo pkt in coda
@@ -82,6 +87,7 @@ public class MMcSystem {
                             s.setPkt(pktInCoda); //diamo al servitore vuoto il pacchetto da servire che è in coda
                             serverPieni++; // incremento il numero di server pieni
                             sistema.getCoda().remove(0); // rimuovo il pkt dalla coda
+                            sistema.addCambiamentiStatoCoda(sistema.getCoda().size(), t);
                         }
                         break;
                     }
@@ -89,12 +95,11 @@ public class MMcSystem {
             }
             
         }
-        System.out.println("Pacchetti arrivati: " + pktArrivati);
-        //System.out.println("Pacchetti serviti: " + pktServiti);
-        // double Ls = (double)pktSistema / cambiamentiStato;
-        // System.out.println("Pacchetti medi nel sistema: " + Ls);
-        // Ws = Ls/sistema.getLam();
-        // System.out.println("Pacchetti medi nel sistema: " + Ws);
+        //System.out.println("Pacchetti arrivati: " + pktArrivati);
+        System.out.println("Ls: " + sistema.getLs());
+        System.out.println("Lq: " + sistema.getLq());
+        System.out.println("Ws: " + sistema.getWs());
+        System.out.println("Wq: " + sistema.getWq());
     }
 
 }
